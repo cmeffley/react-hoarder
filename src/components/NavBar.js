@@ -10,35 +10,41 @@ import {
   NavItem,
   Button,
 } from 'reactstrap';
-import { signInUser, signOutUser } from '../helpers/auth';
+import { signOutUser } from '../helpers/auth';
 
 const NavBar = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
+  const authenticated = () => (
+    <>
+      <NavItem>
+        <Link className="nav-link" to="/myStuff">My Stuff</Link>
+      </NavItem>
+      <NavItem>
+        <Link className="nav-link" to="/addNew">New</Link>
+      </NavItem>
+    </>
+  );
+
   return (
     <div>
       <Navbar color="dark" dark expand="md">
-        <NavbarBrand href="/">Home</NavbarBrand>
+        <NavbarBrand href="/">Hoarder</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <NavItem>
-              <Link className="nav-link" to="/about">About</Link>
-            </NavItem>
-            <NavItem>
-              <Link className="nav-link" to="/users">Users</Link>
-            </NavItem>
-          </Nav>
+          {user && authenticated()}
           { user !== null
-            && <div className='auth-btn-container'>
+            && <NavItem className='auth-btn-container'>
                 {
                   user ? <Button color='danger' onClick={signOutUser}>SignOut?</Button>
-                    : <Button color='info' onClick={signInUser}>SignIN!</Button>
+                    : ''
                 }
-              </div>
+              </NavItem>
             }
+          </Nav>
         </Collapse>
       </Navbar>
     </div>
